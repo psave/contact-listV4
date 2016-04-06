@@ -1,32 +1,24 @@
 $(document).ready(function() {
 
+
   var $first_name = $('#first_name');
   var $last_name = $('#last_name');
   var $email = $('#email');
   var $phone_number = $('#phone_number')
   // See: http://docs.jquery.com/Tutorials:Introducing_$(document).ready()
-  function generateContact(contact) {
-    var html = "";
-    html += "<tr>"
-    html += "<td>" + contact.first_name + "</td>";
-    html += "<td>" + contact.last_name + "</td>";
-    html += "<td>" + contact.email + "</td>";
-    html += "<td>" + contact.phone_number + "</td>";
-    html += "</tr>"
-    return html;
-  }
-
   $.ajax({
     method: "GET",
     url: "/contacts"
   })
   .done(function(response) {
-    var rows = "";
-    response["contacts"].forEach(function(element){
-      rows += generateContact(element)
+    var html = "<ul>" 
+
+    response["contacts"].forEach(function(el){
+      html += "<li>" + el.first_name + " " + el.last_name  + "</li>"
     })
 
-    $("#contacts tbody").append(rows)
+    html += "</ul>"
+    $("#contacts").append(html)
   })
 
   $('#new-contact').on('submit', function() {
@@ -41,17 +33,14 @@ $(document).ready(function() {
     $.ajax({
       method: "POST",
       url: "/contacts",
+      // need to get the below working..
       data: JSON.stringify(contact),
+      //JSON.stringify({first_name: "Joe", last_name: "Doe", email: "a@a.com", phone_number: "123-4567"})
     })
     .done(function(response){
-      var row = "";
-      row += generateContact(response)
-      $("#contacts tbody").append(row)
-      // Below is not clearing the form just yet..
-      $('#new-contact input').val(''); 
+      
     })
     return false;
   })
 
 });
-

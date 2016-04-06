@@ -6,7 +6,7 @@ Joe = Contact.create(
   )
 James = Contact.create(
   first_name: "James", 
-  last_name: "Money", 
-  email: "blank@blank.com",
-  phone_number: "123-456-7890"
+  last_name: "Coder", 
+  email: "blanket@blank.com",
+  phone_number: "123-456-7891"
   )

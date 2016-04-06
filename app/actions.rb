@@ -12,7 +12,10 @@ get "/contacts" do
 end
 
 post "/contacts" do
-  puts params.inspect
+  request.body.rewind
+  contact = Contact.create(JSON.parse request.body.read)
+  contact.save
+  json(contact)
 end
 
 
