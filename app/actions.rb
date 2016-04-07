@@ -12,10 +12,16 @@ get "/contacts" do
 end
 
 post "/contacts" do
+  binding.pry
   request.body.rewind
   contact = Contact.create(JSON.parse request.body.read)
   contact.save
   json(contact)
 end
 
-
+delete "/contacts/:id" do
+  @contact = Contact.find(params[:id])
+  @contact.destroy
+  @contacts = Contact.all
+  json({contacts: @contacts})
+end

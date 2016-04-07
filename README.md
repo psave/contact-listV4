@@ -1,12 +1,13 @@
 Sinatra
 =============
 
-Brought to you by Lighthouse Labs
 
-## Getting Started
+## Getting Started locally
 
-1. `bundle install`
-2. `bundle exec rake db:create`
+1. Run `bundle install` in the directory where the project is located.
+2. Create the database for postgres 
+a) `psql -U vagrant postgres`
+b) `create database contact_list_dev;`
 3. `bundle exec rake db:migrate`
 2. `shotgun -p 3000 -o 0.0.0.0`
 3. Visit `http://localhost:3000/` in your browser
