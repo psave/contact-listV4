@@ -11,6 +11,9 @@ require 'sinatra/contrib/all' # Requires cookies, among other things
 require 'pry'
 require "sinatra/json"
 
+# First step to alloqwing access to the api
+require 'sinatra/cross_origin'
+
 APP_ROOT = Pathname.new(File.expand_path('../../', __FILE__))
 APP_NAME = APP_ROOT.basename.to_s
 
@@ -23,6 +26,9 @@ configure do
   set :session_secret, ENV['SESSION_KEY'] || 'lighthouselabssecret'
 
   set :views, File.join(Sinatra::Application.root, "app", "views")
+
+  enable :cross_origin
+
 end
 
 # Set up the database and models

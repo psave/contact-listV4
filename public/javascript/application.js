@@ -3,30 +3,63 @@ $(document).ready(function() {
   var $first_name = $('#first_name');
   var $last_name = $('#last_name');
   var $email = $('#email');
-  var $phone_number = $('#phone_number')
+  var $phone_number = $('#phone_number');
+
   // See: http://docs.jquery.com/Tutorials:Introducing_$(document).ready()
   function generateContact(contact) {
-    var html = "";
-    html += "<tr>"
-    html += "<td>" + contact.first_name + "</td>";
-    html += "<td>" + contact.last_name + "</td>";
-    html += "<td>" + contact.email + "</td>";
-    html += "<td>" + contact.phone_number + "</td>";
-    html += "</tr>"
-    return html;
+
+    var row = $("<tr>")
+                .append($("<td>").text(contact.first_name))
+                .append($("<td>").text(contact.last_name))
+                .append($("<td>").text(contact.email))
+                .append($("<td>").text(contact.phone_number));
+
+    var deleteButton = $("<button>")
+                .text("Delete")
+                .addClass('btn btn-primary btn-xs delete-contact')
+                .data('contact-id', contact.id)
+                // add in some kind of JS callback for the deleteContact function
+                // .on('click', deleteContact(contact));
+
+    row.append(
+      $("<td>").append(deleteButton)
+    );
+
+    return row;
+
   }
+
+
+  $('#contacts').on('click', '.delete-contact', function() {
+    $.ajax({
+      method: "DELETE",
+      url: "/contacts/" + $(this).data('contact-id'),
+    })
+    .done(function(response){
+      var contactsTable = $("#contacts tbody");
+      contactsTable.empty();
+
+      response["contacts"].forEach(function(element){
+        var contactRow = generateContact(element);
+        contactsTable.append(contactRow);
+      })
+
+    })
+  });
 
   $.ajax({
     method: "GET",
     url: "/contacts"
   })
   .done(function(response) {
-    var rows = "";
+
+    var contactsTable = $("#contacts tbody");
+
     response["contacts"].forEach(function(element){
-      rows += generateContact(element)
+      var contactRow = generateContact(element);
+      contactsTable.append(contactRow);
     })
 
-    $("#contacts tbody").append(rows)
   })
 
   $('#new-contact').on('submit', function() {
